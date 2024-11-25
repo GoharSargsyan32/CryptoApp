@@ -1,17 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
+import { FetchConfig } from "../ts/types/FetchConfig";
+import { FetchState } from "../ts/types/FetchState";
 
-type FetchConfig = {
-    method?: "POST" | "DELETE" | "PUT" | "GET";
-    url:string;
-    body?: object;
-    header?: object
-}
-
-type FetchState<T> = {
-    error: string | null;
-    loading: boolean;
-    data: T | null;
-}
 
 export function useFetch<T>({method, url, header, body} : FetchConfig) : FetchState<T> {
     const [data, setData] = useState<T | null>(null);
@@ -21,7 +11,14 @@ export function useFetch<T>({method, url, header, body} : FetchConfig) : FetchSt
     const fetchData = useCallback(async() => {
         setLoading(true);
         try {
-            const response = await fetch(url);
+            const response = await fetch(url, {
+                method,
+                headers: {
+                    "Content-Type": "appLication/json",
+                    ...header
+                },
+                body: method !== "GET" && body ? JSON.stringify(body) : undefined
+            });
             const responseData = await response.json();
             setData(responseData);
         } catch(error) {

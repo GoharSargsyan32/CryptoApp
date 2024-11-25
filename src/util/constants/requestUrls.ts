@@ -1,3 +1,3 @@
 export const requestUrls = {
-    coinsMarkets: `${process.env.REACT_APP_CRYPTO_API_URL}/coins/markets`
+    coinsMarkets: `https://api.coingecko.com/api/v3/coins/markets`
 }
