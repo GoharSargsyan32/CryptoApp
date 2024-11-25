@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 
 type FetchConfig = {
-    method?: "POST" | "DELETE" | "PUT" | "GET" | "PATCH";
+    method?: "POST" | "DELETE" | "PUT" | "GET";
     url:string;
     body?: object;
     header?: object
