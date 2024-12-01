@@ -7,11 +7,19 @@ import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "../../util/constants/routes";
 import { useMemo, useState } from "react";
 import { useQueryParam } from "../../hooks/useQueryParam";
-import {DEFAULT_PAGINATION} from "../../util/constants/pagination"
+import {DEFAULT_PAGINATION} from "../../util/constants/pagination";
+import Header from "../../components/global/Header";
+
+const CURRENCIES: { [key: string]: { symbol: string; } } = {
+    usd: { symbol: "$" },
+    aed: { symbol: "AED" },
+    eur: { symbol: "€" },
+  };
 
 
 const CryptoList = () => {
     const navigate = useNavigate();
+    const [currency, setCurrency] = useState('usd');
 
     const {getQueryParam, setQueryParam} = useQueryParam();
     const page = getQueryParam("page") || DEFAULT_PAGINATION.page;
@@ -19,9 +27,15 @@ const CryptoList = () => {
 
 
     const {data, loading, error} = useFetch<CurrencyListResponseModel[]>({
-        url:`${requestUrls.coinsMarkets}/coins/markets?vs_currency=usd&per_page=${pageSize}&page=${page}`,
+        url:`${requestUrls.coinsMarkets}/coins/markets?vs_currency=${currency}&per_page=${pageSize}&page=${page}`,
         header: {
             'x-cg-demo-api-key': process.env.REACT_APP_CRYPTO_API_KEY
+        },
+        transform: (item: CurrencyListResponseModel) => {
+            return {
+                ...item,
+                symbol: CURRENCIES[currency].symbol
+            }
         }
     })
 
@@ -51,8 +65,14 @@ const CryptoList = () => {
                 {
                     title: "Price Change 24",
                     dataIndex: "price_change_24h",
-                    key: "price_change_24h"
-                },
+                    key: "price_change_24h",
+                    render: (value: number, record: CurrencyListResponseModel) => {
+                        return (
+                          <span>
+                            {record.symbol} {value}
+                          </span>
+                          )
+                        }},
             ]        
     }, [])
 
@@ -63,8 +83,13 @@ const CryptoList = () => {
 
     console.log(process.env);
 
+    const currencySelect = (id: string) => {
+        setCurrency(id);
+    }
+
     return (
         <div>
+            <Header currencySelect={currencySelect}/>
             <Table<CurrencyListResponseModel> rowKey="key"
             columns={columns}
             loading={loading}

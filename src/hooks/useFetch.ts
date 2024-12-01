@@ -3,7 +3,7 @@ import { FetchConfig } from "../ts/types/FetchConfig";
 import { FetchState } from "../ts/types/FetchState";
 
 
-export function useFetch<T>({method, url, header, body} : FetchConfig) : FetchState<T> {
+export function useFetch<T>({method, url, header, body, transform} : FetchConfig) : FetchState<T> {
     const [data, setData] = useState<T | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -20,7 +20,7 @@ export function useFetch<T>({method, url, header, body} : FetchConfig) : FetchSt
                 body: method !== "GET" && body ? JSON.stringify(body) : undefined
             });
             const responseData = await response.json();
-            setData(responseData);
+            setData(transform ? responseData.map(transform) : responseData);
         } catch(error) {
             setError("Something is wrong");
         } finally {

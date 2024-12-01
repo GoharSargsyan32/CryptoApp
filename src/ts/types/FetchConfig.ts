@@ -6,6 +6,7 @@ export type FetchConfig = {
     url:string;
     body?: object;
     header?: object
+    transform?: (item: any) => any
 }
 
 
