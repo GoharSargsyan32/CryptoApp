@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { FetchConfig } from "../ts/types/FetchConfig";
 import { FetchState } from "../ts/types/FetchState";
 
-
+/* eslint-disable */
 export function useFetch<T>({method, url, header, body, transform} : FetchConfig) : FetchState<T> {
     const [data, setData] = useState<T | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -26,7 +26,7 @@ export function useFetch<T>({method, url, header, body, transform} : FetchConfig
         } finally {
             setLoading(false);
         }
-    }, [url, body, header, method, transform]);
+    }, [url]);
 
     useEffect(()=>{
         fetchData();
