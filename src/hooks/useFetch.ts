@@ -26,7 +26,7 @@ export function useFetch<T>({method, url, header, body, transform} : FetchConfig
         } finally {
             setLoading(false);
         }
-    }, [url]);
+    }, [url, body, header, method, transform]);
 
     useEffect(()=>{
         fetchData();
