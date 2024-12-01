@@ -26,7 +26,7 @@ const CryptoList = () => {
     const pageSize = getQueryParam("pageSize") || DEFAULT_PAGINATION.pageSize;
 
 
-    const {data, loading, error} = useFetch<CurrencyListResponseModel[]>({
+    const {data, loading} = useFetch<CurrencyListResponseModel[]>({
         url:`${requestUrls.coinsMarkets}/coins/markets?vs_currency=${currency}&per_page=${pageSize}&page=${page}`,
         header: {
             'x-cg-demo-api-key': process.env.REACT_APP_CRYPTO_API_KEY
@@ -53,7 +53,7 @@ const CryptoList = () => {
                     key: "image",
                     render: (value) => {
                         return(
-                            <img src={value} width={50} height={50} />
+                            <img src={value} width={50} height={50} alt="icon" />
                         )
                     }
                 },

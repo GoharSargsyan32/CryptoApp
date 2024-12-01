@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Modal, Button } from "antd";
-import { useFetch } from "../../hooks/useFetch";
 
 interface Currency {
   name: string;

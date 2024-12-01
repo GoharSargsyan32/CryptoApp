@@ -7,7 +7,7 @@ const { Meta } = Card;
 
 const CryptoDetail = () => {
     const { id } = useParams<{id: string}>();
-    const {data, loading, error} = useFetch<CurrencyDetailsResponseModel>({
+    const {data} = useFetch<CurrencyDetailsResponseModel>({
         url: `${requestUrls.coinsMarkets}/coins/${id}`,
         header: {
             'x-cg-demo-api-key': process.env.REACT_APP_CRYPTO_API_KEY
